@@ -22,7 +22,7 @@ export class AuthService {
     senha: string,
   ): Promise<Omit<AuthUser, 'senha'>> {
     const userResult = await this.usuarioRepository.findByEmail(email);
-    const user: AuthUser | null = userResult ? userResult as AuthUser : null;
+    const user: AuthUser | null = userResult ? (userResult as AuthUser) : null;
     let senhaValida = false;
     if (user && typeof user.senha === 'string' && typeof senha === 'string') {
       senhaValida = await (bcrypt as typeof import('bcryptjs')).compare(

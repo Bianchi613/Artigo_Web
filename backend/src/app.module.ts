@@ -6,6 +6,10 @@ import { UsuarioController } from './usuario/usuario.controller';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
+import { Paper } from './paper/paper.model';
+import { UsuarioPaper } from './paper/usuario_paper.model';
+import { PaperController } from './paper/paper.controller';
+import { PaperModule } from './paper/paper.module';
 
 @Module({
   imports: [
@@ -20,7 +24,7 @@ import { AppController } from './app.controller';
         username: configService.get<string>('DATABASE_USER', 'postgres'),
         password: configService.get<string>('DATABASE_PASSWORD', '12345'),
         database: configService.get<string>('DATABASE_NAME', 'artigo_web'),
-        models: [Usuario],
+        models: [Usuario, Paper, UsuarioPaper],
         autoLoadModels: true,
         synchronize: configService.get<string>('NODE_ENV') !== 'production',
         logging:
@@ -29,10 +33,11 @@ import { AppController } from './app.controller';
             : false,
       }),
     }),
-    SequelizeModule.forFeature([Usuario]),
+    SequelizeModule.forFeature([Usuario, Paper, UsuarioPaper]),
     UsuarioModule,
     AuthModule,
+    PaperModule,
   ],
-  controllers: [AppController, UsuarioController],
+  controllers: [AppController, UsuarioController, PaperController],
 })
 export class AppModule {}
