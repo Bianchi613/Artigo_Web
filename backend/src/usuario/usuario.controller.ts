@@ -24,6 +24,57 @@ import {
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
+  // GET /usuarios
+  @Get()
+  @ApiOperation({ summary: 'Retorna todos os usuários' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuários retornada com sucesso.',
+  })
+  async getUsuarios(): Promise<Usuario[]> {
+    try {
+      return await this.usuarioService.findAll();
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      let message = 'Erro ao buscar usuários';
+      if (typeof error === 'object' && error && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
+      throw new HttpException(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  // GET /usuarios/:id
+  @Get(':id')
+  @ApiOperation({ summary: 'Retorna um usuário pelo ID' })
+  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiResponse({ status: 200, description: 'Usuário encontrado.' })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
+  async getUsuarioById(@Param('id') id: string): Promise<Usuario | null> {
+    try {
+      const usuario = await this.usuarioService.findById(Number(id));
+      if (!usuario) {
+        throw new HttpException(
+          'Usuário não encontrado.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return usuario;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      let message = 'Erro interno do servidor';
+      if (typeof error === 'object' && error && 'message' in error) {
+        message = String((error as Record<string, unknown>).message);
+      }
+      throw new HttpException(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  // POST /usuarios
   @Post()
   @ApiOperation({ summary: 'Cria um novo usuário' })
   @ApiResponse({ status: 201, description: 'Usuário criado com sucesso.' })
@@ -54,54 +105,7 @@ export class UsuarioController {
     }
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Retorna todos os usuários' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de usuários retornada com sucesso.',
-  })
-  async getUsuarios(): Promise<Usuario[]> {
-    try {
-      return await this.usuarioService.findAll();
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      let message = 'Erro ao buscar usuários';
-      if (typeof error === 'object' && error && 'message' in error) {
-        message = String((error as Record<string, unknown>).message);
-      }
-      throw new HttpException(message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  @Get(':id')
-  @ApiOperation({ summary: 'Retorna um usuário pelo ID' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
-  @ApiResponse({ status: 200, description: 'Usuário encontrado.' })
-  @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
-  async getUsuarioById(@Param('id') id: string): Promise<Usuario | null> {
-    try {
-      const usuario = await this.usuarioService.findById(Number(id));
-      if (!usuario) {
-        throw new HttpException(
-          'Usuário não encontrado.',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-      return usuario;
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      let message = 'Erro interno do servidor';
-      if (typeof error === 'object' && error && 'message' in error) {
-        message = String((error as Record<string, unknown>).message);
-      }
-      throw new HttpException(message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
+  // PUT /usuarios/:id
   @Put(':id')
   @ApiOperation({ summary: 'Atualiza os dados de um usuário' })
   @ApiParam({ name: 'id', description: 'ID do usuário' })
@@ -142,6 +146,7 @@ export class UsuarioController {
     }
   }
 
+  // DELETE /usuarios/:id
   @Delete(':id')
   @ApiOperation({ summary: 'Exclui um usuário pelo ID' })
   @ApiParam({ name: 'id', description: 'ID do usuário' })

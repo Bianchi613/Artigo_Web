@@ -6,6 +6,9 @@ import { UsuarioController } from './usuario/usuario.controller';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
+import { AuthController } from './auth/auth.controller';
+import { ConferenciaController } from './conferencia/conferencia.controller';
+import { PaperConfController } from './paper_conf/paper_conf.controller';
 import { Paper } from './paper/paper.model';
 import { UsuarioPaper } from './paper/usuario_paper.model';
 import { PaperController } from './paper/paper.controller';
@@ -45,11 +48,19 @@ import { PaperConfModule } from './paper_conf/paper_conf.module';
       PaperConf,
     ]),
     UsuarioModule,
-    AuthModule,
     PaperModule,
     ConferenciaModule,
     PaperConfModule,
+    AuthModule,
   ],
-  controllers: [AppController, UsuarioController, PaperController],
+  // Organização dos endpoints principais (ordem: Auth, Usuários, Papers, Conferência, PaperConf, Teste)
+  controllers: [
+    AuthController, // /auth endpoints (login)
+    UsuarioController, // /usuarios endpoints
+    PaperController, // /papers endpoints
+    ConferenciaController, // /conferencia endpoints
+    PaperConfController, // /paper-conf endpoints
+    AppController, // /teste endpoint (health/test)
+  ],
 })
 export class AppModule {}
