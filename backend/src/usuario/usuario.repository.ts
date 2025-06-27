@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Usuario } from './usuario.model';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsuarioRepository {
@@ -24,14 +25,15 @@ export class UsuarioRepository {
     if (!usuario.nome || !usuario.senha || !usuario.email || !usuario.perfil) {
       throw new Error('Campos obrigatórios ausentes para criação de usuário');
     }
-    // Cria apenas com os campos obrigatórios e opcionais explicitamente permitidos
+    // Gera hash da senha antes de salvar
+    const senhaHash: string = await bcrypt.hash(usuario.senha, 10);
     const created = await this.usuarioModel.create({
       nome: usuario.nome,
-      senha: usuario.senha,
+      senha: senhaHash,
       email: usuario.email,
       lattes: usuario.lattes,
       perfil: usuario.perfil,
-    } as any); // 'as any' aqui é seguro pois já validamos os campos obrigatórios
+    } as any);
     return created.get({ plain: true });
   }
 
