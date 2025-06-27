@@ -3,8 +3,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Usuario } from './usuario/usuario.model';
 import { UsuarioController } from './usuario/usuario.controller';
-import { UsuarioService } from './usuario/usuario.service';
-import { UsuarioRepository } from './usuario/usuario.repository';
+import { UsuarioModule } from './usuario/usuario.module';
+import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -30,8 +30,9 @@ import { AppController } from './app.controller';
       }),
     }),
     SequelizeModule.forFeature([Usuario]),
+    UsuarioModule,
+    AuthModule,
   ],
   controllers: [AppController, UsuarioController],
-  providers: [UsuarioService, UsuarioRepository],
 })
 export class AppModule {}
