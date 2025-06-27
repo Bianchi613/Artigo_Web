@@ -2,6 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Conferencia } from './conferencia.model';
 
+type ConferenciaCreationAttrs = {
+  titulo: string;
+  url?: string;
+  data?: Date;
+  deletado_em?: Date;
+};
 @Injectable()
 export class ConferenciaRepository {
   constructor(
@@ -10,14 +16,16 @@ export class ConferenciaRepository {
   ) {}
 
   async create(input: Partial<Conferencia>): Promise<Conferencia> {
-    // Garante apenas os campos válidos
-    const dataToCreate: any = {};
-    if (input.titulo !== undefined) dataToCreate.titulo = input.titulo;
+    // Garante apenas os campos válidos e tipados
+    const dataToCreate: ConferenciaCreationAttrs = {
+      titulo: input.titulo!,
+    };
     if (input.url !== undefined) dataToCreate.url = input.url;
     if (input.data !== undefined) dataToCreate.data = input.data;
     if (input.deletado_em !== undefined)
       dataToCreate.deletado_em = input.deletado_em;
-    return this.conferenciaModel.create(dataToCreate);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return this.conferenciaModel.create(dataToCreate as any);
   }
 
   async findAll(): Promise<Conferencia[]> {
