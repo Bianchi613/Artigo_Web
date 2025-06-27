@@ -17,7 +17,7 @@ export default function Login() {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3001/api/auth/login", {
+      const response = await axios.post("http://localhost:3000/auth/login", {
         email: username,
         senha: password,
       });
@@ -29,7 +29,7 @@ export default function Login() {
       } else {
         // Se não retornar, buscar o perfil do usuário autenticado
         try {
-          const perfilRes = await axios.get("http://localhost:3001/api/usuarios/me", {
+          const perfilRes = await axios.get("http://localhost:3000/usuarios/me", {
             headers: { Authorization: `Bearer ${response.data.access_token}` }
           });
           localStorage.setItem("usuario", JSON.stringify(perfilRes.data));
