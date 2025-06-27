@@ -10,6 +10,10 @@ import { Paper } from './paper/paper.model';
 import { UsuarioPaper } from './paper/usuario_paper.model';
 import { PaperController } from './paper/paper.controller';
 import { PaperModule } from './paper/paper.module';
+import { Conferencia } from './conferencia/conferencia.model';
+import { PaperConf } from './paper_conf/paper_conf.model';
+import { ConferenciaModule } from './conferencia/conferencia.module';
+import { PaperConfModule } from './paper_conf/paper_conf.module';
 
 @Module({
   imports: [
@@ -24,7 +28,7 @@ import { PaperModule } from './paper/paper.module';
         username: configService.get<string>('DATABASE_USER', 'postgres'),
         password: configService.get<string>('DATABASE_PASSWORD', '12345'),
         database: configService.get<string>('DATABASE_NAME', 'artigo_web'),
-        models: [Usuario, Paper, UsuarioPaper],
+        models: [Usuario, Paper, UsuarioPaper, Conferencia, PaperConf],
         autoLoadModels: true,
         synchronize: configService.get<string>('NODE_ENV') !== 'production',
         logging:
@@ -33,10 +37,18 @@ import { PaperModule } from './paper/paper.module';
             : false,
       }),
     }),
-    SequelizeModule.forFeature([Usuario, Paper, UsuarioPaper]),
+    SequelizeModule.forFeature([
+      Usuario,
+      Paper,
+      UsuarioPaper,
+      Conferencia,
+      PaperConf,
+    ]),
     UsuarioModule,
     AuthModule,
     PaperModule,
+    ConferenciaModule,
+    PaperConfModule,
   ],
   controllers: [AppController, UsuarioController, PaperController],
 })
