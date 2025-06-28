@@ -65,4 +65,33 @@ artigo_web/
 
 ---
 
+## 📊 Dashboard de Progresso
+
+| Tarefa                                      | Status     |
+|---------------------------------------------|:----------:|
+| Estrutura inicial do projeto (backend/front) | ✅ Feito    |
+| Configuração do NestJS (backend)             | ✅ Feito    |
+| Configuração do React (frontend)             | ✅ Feito    |
+| Instalação e setup do Tailwind CSS           | ✅ Feito    |
+| Integração do Axios no frontend              | ✅ Feito    |
+| Criação da tela Home                        | ✅ Feito    |
+| Criação da tela Login                       | ✅ Feito    |
+| Autenticação JWT no backend                  | ✅ Feito    |
+| Salvando token e perfil no localStorage      | ✅ Feito    |
+| Navegação com React Router                   | ✅ Feito    |
+| Estrutura de componentes organizada          | ✅ Feito    |
+| Limpeza de arquivos de teste desnecessários  | ✅ Feito    |
+| Dashboard de exemplo após login              | ✅ Feito    |
+| Cadastro de usuário (frontend)               | ⬜ A fazer  |
+| CRUD de usuários (frontend/backend)          | ⬜ A fazer  |
+| Telas administrativas (dashboard real)       | ⬜ A fazer  |
+| Validação de formulários                     | ⬜ A fazer  |
+| Proteção de rotas (auth guard frontend)      | ⬜ A fazer  |
+| Deploy em produção                           | ⬜ A fazer  |
+| Documentação detalhada das APIs              | ⬜ A fazer  |
+
+---
+
+> Atualize este dashboard conforme novas funcionalidades forem implementadas!
+
 Desenvolvido para fins acadêmicos. Para dúvidas ou sugestões, entre em contato.
