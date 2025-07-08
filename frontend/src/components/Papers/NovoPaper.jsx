@@ -1,18 +1,26 @@
+
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
+
+
 export default function NovoPaper() {
+
   const [titulo, setTitulo] = useState("");
+  const [url, setUrl] = useState("");
   const [pdf, setPdf] = useState(null);
-  const [autores, setAutores] = useState("");
+  const [usuarios, setUsuarios] = useState([]);
+  const [autoresSelecionados, setAutoresSelecionados] = useState([]);
   const [conferencias, setConferencias] = useState([]);
   const [conferenciaId, setConferenciaId] = useState("");
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  // Buscar conferências cadastradas ao montar o componente
+  // Buscar conferências e usuários cadastrados ao montar o componente
   useEffect(() => {
     const fetchConferencias = async () => {
       try {
@@ -28,33 +36,66 @@ export default function NovoPaper() {
         setConferencias([]);
       }
     };
+    const fetchUsuarios = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:3000/usuarios", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUsuarios(res.data);
+      } catch (err) {
+        setUsuarios([]);
+      }
+    };
     fetchConferencias();
+    fetchUsuarios();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro("");
     setSucesso("");
+
+    // Validação simples
+    if (!titulo.trim()) {
+      setErro("O título é obrigatório.");
+      return;
+    }
+    if (!conferenciaId) {
+      setErro("Selecione uma conferência.");
+      return;
+    }
+
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      // Envio com arquivo PDF
-      const formData = new FormData();
-      formData.append("titulo", titulo);
-      formData.append(
-        "autores",
-        JSON.stringify(autores.split(",").map((a) => ({ nome: a.trim() }))),
-      );
-      if (pdf) formData.append("pdf", pdf);
+      const userId = localStorage.getItem("userId");
+      // Garante que o usuário logado sempre será autor
+      let autoresIds = [Number(userId)];
+      // Adiciona outros autores selecionados (sem duplicar o logado)
+      autoresSelecionados.forEach((id) => {
+        if (id && Number(id) !== Number(userId) && !autoresIds.includes(Number(id))) {
+          autoresIds.push(Number(id));
+        }
+      });
 
-      // 1. Cadastrar o paper
+      // Monta o corpo da requisição
+
+      const data = {
+        titulo,
+        referencia: "",
+        url,
+        pdf: pdf || null,
+        autoresIds,
+      };
+
       const paperRes = await axios.post(
         "http://localhost:3000/papers",
-        formData,
+        data,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         },
       );
@@ -63,7 +104,7 @@ export default function NovoPaper() {
       // 2. Criar submissão (paper-conf) se conferência selecionada
       if (conferenciaId && paperId) {
         await axios.post(
-          "http://localhost:3000/submissoes",
+          "http://localhost:3000/paper-conf",
           {
             paperId,
             conferenciaId,
@@ -77,7 +118,12 @@ export default function NovoPaper() {
       setSucesso("Paper cadastrado com sucesso!");
       setTimeout(() => navigate("/dashboard"), 1200);
     } catch (err) {
-      setErro("Erro ao cadastrar paper.");
+      // Tenta mostrar mensagem detalhada do backend
+      if (err.response && err.response.data && err.response.data.message) {
+        setErro(Array.isArray(err.response.data.message) ? err.response.data.message.join(" ") : err.response.data.message);
+      } else {
+        setErro("Erro ao cadastrar paper.");
+      }
     } finally {
       setLoading(false);
     }
@@ -94,25 +140,43 @@ export default function NovoPaper() {
           placeholder="Título"
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
+          className={`w-full p-2 border rounded ${erro && !titulo.trim() ? 'border-red-500' : ''}`}
+        />
+        <input
+          type="text"
+          placeholder="URL do PDF (opcional)"
+          value={url}
+          onChange={e => setUrl(e.target.value)}
           className="w-full p-2 border rounded"
         />
         <input
           type="file"
           accept="application/pdf"
-          onChange={(e) => setPdf(e.target.files[0])}
+          onChange={e => setPdf(e.target.files[0] || null)}
           className="w-full p-2 border rounded"
         />
-        <input
-          type="text"
-          placeholder="Autores (separados por vírgula)"
-          value={autores}
-          onChange={(e) => setAutores(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
+        <label className="block font-medium">Autores adicionais:</label>
+        <select
+          multiple
+          value={autoresSelecionados}
+          onChange={e => {
+            const options = Array.from(e.target.selectedOptions).map(opt => opt.value);
+            setAutoresSelecionados(options);
+          }}
+          className="w-full p-2 border rounded h-32"
+        >
+          {usuarios
+            .filter(u => String(u.id) !== String(localStorage.getItem("userId")))
+            .map(u => (
+              <option key={u.id} value={u.id}>
+                {u.nome} ({u.email})
+              </option>
+            ))}
+        </select>
         <select
           value={conferenciaId}
           onChange={(e) => setConferenciaId(e.target.value)}
-          className="w-full p-2 border rounded"
+          className={`w-full p-2 border rounded ${erro && !conferenciaId ? 'border-red-500' : ''}`}
         >
           <option value="">Selecione a Conferência</option>
           {conferencias.length === 0 && (
