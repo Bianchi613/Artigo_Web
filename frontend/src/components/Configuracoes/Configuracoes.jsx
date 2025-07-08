@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 export default function Configuracoes() {
@@ -14,7 +14,7 @@ export default function Configuracoes() {
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [salvando, setSalvando] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUsuario() {
