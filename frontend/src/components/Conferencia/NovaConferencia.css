@@ -1,0 +1,39 @@
+.max-w-lg {
+  max-width: 32rem;
+}
+.bg-white {
+  background: #fff;
+}
+.rounded {
+  border-radius: 0.5rem;
+}
+.shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.text-xl {
+  font-size: 1.25rem;
+}
+.font-bold {
+  font-weight: bold;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.text-red-500 {
+  color: #ef4444;
+}
+.text-green-600 {
+  color: #16a34a;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.w-full {
+  width: 100%;
+}
+.bg-purple-700 {
+  background: #7c3aed;
+}
+.text-white {
+  color: #fff;
+}

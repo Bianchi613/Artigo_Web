@@ -95,10 +95,7 @@ function UserRegister() {
           onChange={(e) => setLattes(e.target.value)}
         />
 
-        <select
-          value={perfil}
-          onChange={(e) => setPerfil(e.target.value)}
-        >
+        <select value={perfil} onChange={(e) => setPerfil(e.target.value)}>
           <option value="cliente">Cliente</option>
           <option value="administrador">Administrador</option>
         </select>

@@ -36,13 +36,10 @@ export default function Dashboard() {
           totalPapers: papersRes.data.length,
           totalConferencias: confsRes.data.length,
           totalSubmissoes: subsRes.data.length,
-          ultimosPapers: papersRes.data
-            .sort((a, b) => b.id - a.id)
-            .slice(0, 5),
+          ultimosPapers: papersRes.data.sort((a, b) => b.id - a.id).slice(0, 5),
           ultimasConferencias: confsRes.data
             .sort(
-              (a, b) =>
-                new Date(b.atualizado_em) - new Date(a.atualizado_em)
+              (a, b) => new Date(b.atualizado_em) - new Date(a.atualizado_em),
             )
             .slice(0, 5),
         });
@@ -61,9 +58,7 @@ export default function Dashboard() {
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Painel Acadêmico</h1>
-        <p className="text-gray-600">
-          Visão geral do sistema acadêmico
-        </p>
+        <p className="text-gray-600">Visão geral do sistema acadêmico</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -132,9 +127,8 @@ export default function Dashboard() {
                     <td className="px-4 py-2">{paper.id}</td>
                     <td className="px-4 py-2">{paper.titulo}</td>
                     <td className="px-4 py-2">
-                      {paper.autores
-                        .map((autor) => autor.nome)
-                        .join(", ") || "-"}
+                      {paper.autores.map((autor) => autor.nome).join(", ") ||
+                        "-"}
                     </td>
                     <td className="px-4 py-2">
                       <a
@@ -169,7 +163,9 @@ export default function Dashboard() {
           {dados.ultimasConferencias.length === 0 ? (
             <div className="p-6 text-center text-gray-500">
               <i className="fas fa-university text-4xl mb-3"></i>
-              <p className="text-lg font-medium">Nenhuma conferência cadastrada</p>
+              <p className="text-lg font-medium">
+                Nenhuma conferência cadastrada
+              </p>
             </div>
           ) : (
             <ul className="divide-y divide-gray-200">
@@ -187,9 +183,7 @@ export default function Dashboard() {
                       {new Date(conf.atualizado_em).toLocaleDateString()}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-gray-600">
-                    {conf.url}
-                  </p>
+                  <p className="mt-2 text-sm text-gray-600">{conf.url}</p>
                 </li>
               ))}
             </ul>
