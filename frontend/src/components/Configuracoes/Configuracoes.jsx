@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 export default function Configuracoes() {
+  const { id } = useParams();
   const [usuario, setUsuario] = useState(null);
   const [form, setForm] = useState({ nome: "", email: "", lattes: "", perfil: "" });
   const [erro, setErro] = useState("");
@@ -14,7 +15,10 @@ export default function Configuracoes() {
     async function fetchUsuario() {
       try {
         const token = localStorage.getItem("token");
-        const userId = localStorage.getItem("userId");
+        let userId = id;
+        if (!userId) {
+          userId = localStorage.getItem("userId");
+        }
         if (!userId) {
           setErro("Usuário não encontrado.");
           return;
@@ -34,7 +38,8 @@ export default function Configuracoes() {
       }
     }
     fetchUsuario();
-  }, []);
+  }, [id]);
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -47,7 +52,10 @@ export default function Configuracoes() {
     setSucesso("");
     try {
       const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("userId");
+      let userId = id;
+      if (!userId) {
+        userId = localStorage.getItem("userId");
+      }
       await axios.put(
         `http://localhost:3000/usuarios/${userId}`,
         form,
