@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home.jsx";
 import Login from "./components/Login/Login.jsx";
 import UserRegister from "./components/UserRegister/UserRegister.jsx";
+import Dashboard from "./components/Dashboard/Dashboard.jsx";
 
 function App() {
   return (
@@ -10,15 +11,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro-usuario" element={<UserRegister />} />
-        <Route
-          path="/dashboard"
-          element={
-            <div style={{ padding: "2rem", textAlign: "center" }}>
-              <h1>Dashboard</h1>
-              <p>Login realizado com sucesso!</p>
-            </div>
-          }
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

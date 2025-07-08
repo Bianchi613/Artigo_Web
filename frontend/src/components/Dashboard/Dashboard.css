@@ -1,0 +1,15 @@
+.login-form {
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+
+input:focus {
+  outline: 2px solid #1f2937;
+}
+
+button:focus {
+  outline: 2px solid #1f2937;
+}
+
+.text-red-500 {
+  color: #ef4444;
+}
