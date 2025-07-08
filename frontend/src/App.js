@@ -1,7 +1,7 @@
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home.jsx";
 import Login from "./components/Login/Login.jsx";
+import UserRegister from "./components/UserRegister/UserRegister.jsx";
 
 function App() {
   return (
@@ -9,7 +9,16 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<div style={{padding:'2rem',textAlign:'center'}}><h1>Dashboard</h1><p>Login realizado com sucesso!</p></div>} />
+        <Route path="/cadastro-usuario" element={<UserRegister />} />
+        <Route
+          path="/dashboard"
+          element={
+            <div style={{ padding: '2rem', textAlign: 'center' }}>
+              <h1>Dashboard</h1>
+              <p>Login realizado com sucesso!</p>
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

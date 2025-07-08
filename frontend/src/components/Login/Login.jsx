@@ -44,6 +44,10 @@ export default function Login() {
     }
   };
 
+  const handleNavigateRegister = () => {
+    navigate("/cadastro-usuario");
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-md">
@@ -69,12 +73,19 @@ export default function Login() {
             onClick={() => setShowPassword(!showPassword)}
             tabIndex={-1}
           >
-            {showPassword ? "" : ""}
+            {showPassword ? "Ocultar" : "Mostrar"}
           </button>
         </div>
         {erro && <div className="text-red-500 mb-4">{erro}</div>}
-        <button type="submit" className="w-full bg-gray-800 text-white p-3 rounded hover:bg-gray-900">
+        <button type="submit" className="w-full bg-gray-800 text-white p-3 rounded hover:bg-gray-900 mb-4">
           Entrar
+        </button>
+        <button
+          type="button"
+          onClick={handleNavigateRegister}
+          className="w-full border border-gray-800 text-gray-800 p-3 rounded hover:bg-gray-100"
+        >
+          Criar nova conta
         </button>
       </form>
     </div>
