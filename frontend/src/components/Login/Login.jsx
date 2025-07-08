@@ -24,11 +24,10 @@ export default function Login() {
       localStorage.setItem("token", response.data.access_token);
 
       // Se o backend retornar o usuário junto com o token
+      let usuario = null;
       if (response.data.user || response.data.usuario) {
-        localStorage.setItem(
-          "usuario",
-          JSON.stringify(response.data.user || response.data.usuario),
-        );
+        usuario = response.data.user || response.data.usuario;
+        localStorage.setItem("usuario", JSON.stringify(usuario));
       } else {
         // Se não retornar, buscar o perfil do usuário autenticado
         try {
@@ -40,10 +39,15 @@ export default function Login() {
               },
             },
           );
-          localStorage.setItem("usuario", JSON.stringify(perfilRes.data));
+          usuario = perfilRes.data;
+          localStorage.setItem("usuario", JSON.stringify(usuario));
         } catch (perfilErr) {
           // Se não conseguir buscar o perfil, apenas continue
         }
+      }
+      // Salva o id do usuário para uso em configurações
+      if (usuario && usuario.id) {
+        localStorage.setItem("userId", usuario.id);
       }
 
       navigate("/dashboard");

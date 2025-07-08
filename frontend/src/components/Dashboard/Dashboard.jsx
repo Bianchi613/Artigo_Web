@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Sidebar from "../Sidebar/Sidebar";
 import "./Dashboard.css";
 
 export default function Dashboard() {
@@ -57,7 +58,10 @@ export default function Dashboard() {
   }, [navigate]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+    <div style={{ display: "flex", minHeight: "100vh", background: "#f1f5f9" }}>
+      <Sidebar />
+      <main style={{ flex: 1 }}>
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Painel Acadêmico</h1>
         <p className="text-gray-600">Visão geral do sistema acadêmico</p>
@@ -212,6 +216,8 @@ export default function Dashboard() {
           )}
         </section>
       </div>
+        </div>
+      </main>
     </div>
   );
 }
