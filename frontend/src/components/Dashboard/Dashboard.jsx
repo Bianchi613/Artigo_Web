@@ -12,6 +12,8 @@ export default function Dashboard() {
     totalSubmissoes: 0,
     ultimosPapers: [],
     ultimasConferencias: [],
+    submissoes: [],
+    conferencias: [],
   });
 
   useEffect(() => {
@@ -38,10 +40,10 @@ export default function Dashboard() {
           totalSubmissoes: subsRes.data.length,
           ultimosPapers: papersRes.data.sort((a, b) => b.id - a.id).slice(0, 5),
           ultimasConferencias: confsRes.data
-            .sort(
-              (a, b) => new Date(b.atualizado_em) - new Date(a.atualizado_em),
-            )
+            .sort((a, b) => new Date(b.atualizado_em) - new Date(a.atualizado_em))
             .slice(0, 5),
+          submissoes: subsRes.data,
+          conferencias: confsRes.data,
         });
       } catch (err) {
         console.error("Erro ao carregar dashboard:", err);
@@ -114,34 +116,54 @@ export default function Dashboard() {
                   <th className="px-4 py-2">ID</th>
                   <th className="px-4 py-2">Título</th>
                   <th className="px-4 py-2">Autores</th>
-                  <th className="px-4 py-2">Link</th>
+                  <th className="px-4 py-2">Submissões</th>
+                  <th className="px-4 py-2">PDF</th>
                 </tr>
               </thead>
               <tbody>
-                {dados.ultimosPapers.map((paper) => (
-                  <tr
-                    key={paper.id}
-                    className="hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate(`/papers/${paper.id}`)}
-                  >
-                    <td className="px-4 py-2">{paper.id}</td>
-                    <td className="px-4 py-2">{paper.titulo}</td>
-                    <td className="px-4 py-2">
-                      {paper.autores.map((autor) => autor.nome).join(", ") ||
-                        "-"}
-                    </td>
-                    <td className="px-4 py-2">
-                      <a
-                        href={paper.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Ver PDF
-                      </a>
-                    </td>
-                  </tr>
-                ))}
+                {dados.ultimosPapers.map((paper) => {
+                  // Submissões deste paper
+                  const subs = dados.submissoes.filter(sub => sub.paper_id === paper.id);
+                  return (
+                    <tr
+                      key={paper.id}
+                      className="hover:bg-gray-100 cursor-pointer"
+                      onClick={() => navigate(`/papers/${paper.id}`)}
+                    >
+                      <td className="px-4 py-2">{paper.id}</td>
+                      <td className="px-4 py-2">{paper.titulo}</td>
+                      <td className="px-4 py-2">{paper.autores.map((autor) => autor.nome).join(", ") || "-"}</td>
+                      <td className="px-4 py-2">
+                        {subs.length === 0 ? (
+                          <span className="text-gray-400">Nenhuma submissão</span>
+                        ) : (
+                          subs.map(sub => {
+                            const conf = dados.conferencias.find(c => c.id === sub.conferencia_id);
+                            return (
+                              <div key={sub.id} className="mb-1">
+                                <b>{conf?.titulo || "Conferência desconhecida"}</b> — <span className="text-blue-700">{sub.status}</span>
+                              </div>
+                            );
+                          })
+                        )}
+                      </td>
+                      <td className="px-4 py-2">
+                        {paper.url ? (
+                          <a
+                            href={paper.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-blue-600 hover:underline"
+                          >
+                            Ver PDF
+                          </a>
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           )}
