@@ -1,10 +1,6 @@
 import "./Sidebar.css";
 import { NavLink } from "react-router-dom";
-import {
-  FaTachometerAlt,
-  FaCog,
-  FaSignOutAlt,
-} from "react-icons/fa";
+import { FaTachometerAlt, FaCog, FaSignOutAlt } from "react-icons/fa";
 
 export default function Sidebar() {
   return (

@@ -47,7 +47,7 @@ export default function VisualizarPaper() {
       const res = await axios.put(
         `http://localhost:3000/papers/${paper.id}`,
         { ...form, autoresIds },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setPaper(res.data);
       setEditando(false);
@@ -155,7 +155,14 @@ export default function VisualizarPaper() {
               Salvar
             </button>
             <button
-              onClick={() => { setEditando(false); setForm({ titulo: paper.titulo, url: paper.url, referencia: paper.referencia || "" }); }}
+              onClick={() => {
+                setEditando(false);
+                setForm({
+                  titulo: paper.titulo,
+                  url: paper.url,
+                  referencia: paper.referencia || "",
+                });
+              }}
               className="bg-gray-400 text-white px-4 py-2 rounded"
               disabled={salvando}
             >

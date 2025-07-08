@@ -5,7 +5,12 @@ import axios from "axios";
 export default function Configuracoes() {
   const { id } = useParams();
   const [usuario, setUsuario] = useState(null);
-  const [form, setForm] = useState({ nome: "", email: "", lattes: "", perfil: "" });
+  const [form, setForm] = useState({
+    nome: "",
+    email: "",
+    lattes: "",
+    perfil: "",
+  });
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [salvando, setSalvando] = useState(false);
@@ -23,9 +28,12 @@ export default function Configuracoes() {
           setErro("Usuário não encontrado.");
           return;
         }
-        const res = await axios.get(`http://localhost:3000/usuarios/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `http://localhost:3000/usuarios/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
         setUsuario(res.data);
         setForm({
           nome: res.data.nome || "",
@@ -39,7 +47,6 @@ export default function Configuracoes() {
     }
     fetchUsuario();
   }, [id]);
-
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -56,11 +63,9 @@ export default function Configuracoes() {
       if (!userId) {
         userId = localStorage.getItem("userId");
       }
-      await axios.put(
-        `http://localhost:3000/usuarios/${userId}`,
-        form,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await axios.put(`http://localhost:3000/usuarios/${userId}`, form, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setSucesso("Dados atualizados com sucesso!");
     } catch (err) {
       setErro("Erro ao salvar alterações.");

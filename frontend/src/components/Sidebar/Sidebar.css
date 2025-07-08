@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 2rem 1.5rem 1.5rem 1.5rem;
-  box-shadow: 2px 0 8px rgba(30,41,59,0.08);
+  box-shadow: 2px 0 8px rgba(30, 41, 59, 0.08);
 }
 
 .sidebar-title {
@@ -34,7 +34,9 @@
   text-decoration: none;
   padding: 0.6rem 1rem;
   border-radius: 0.5rem;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 .sidebar-link.active,

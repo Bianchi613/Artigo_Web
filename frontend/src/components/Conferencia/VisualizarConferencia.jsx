@@ -46,7 +46,7 @@ export default function VisualizarConferencia() {
       const res = await axios.put(
         `http://localhost:3000/conferencia/${conf.id}`,
         { ...form },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       setConf(res.data);
       setEditando(false);
@@ -58,7 +58,8 @@ export default function VisualizarConferencia() {
   };
 
   const handleDeletar = async () => {
-    if (!window.confirm("Tem certeza que deseja deletar esta conferência?")) return;
+    if (!window.confirm("Tem certeza que deseja deletar esta conferência?"))
+      return;
     setSalvando(true);
     setErro("");
     try {
@@ -101,8 +102,10 @@ export default function VisualizarConferencia() {
             onChange={handleChange}
             className="border p-1 rounded"
           />
+        ) : conf.data ? (
+          new Date(conf.data).toLocaleDateString()
         ) : (
-          conf.data ? new Date(conf.data).toLocaleDateString() : "-"
+          "-"
         )}
       </p>
       <p className="mb-2">
@@ -155,7 +158,14 @@ export default function VisualizarConferencia() {
               Salvar
             </button>
             <button
-              onClick={() => { setEditando(false); setForm({ titulo: conf.titulo, url: conf.url, data: conf.data ? conf.data.slice(0, 10) : "" }); }}
+              onClick={() => {
+                setEditando(false);
+                setForm({
+                  titulo: conf.titulo,
+                  url: conf.url,
+                  data: conf.data ? conf.data.slice(0, 10) : "",
+                });
+              }}
               className="bg-gray-400 text-white px-4 py-2 rounded"
               disabled={salvando}
             >

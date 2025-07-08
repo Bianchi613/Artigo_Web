@@ -22,7 +22,7 @@ export default function NovoPaper() {
         });
         // Garante que sempre será um array e ordena por título
         const lista = Array.isArray(res.data) ? res.data : [];
-        lista.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+        lista.sort((a, b) => (a.titulo || "").localeCompare(b.titulo || ""));
         setConferencias(lista);
       } catch (err) {
         setConferencias([]);
@@ -48,12 +48,16 @@ export default function NovoPaper() {
       if (pdf) formData.append("pdf", pdf);
 
       // 1. Cadastrar o paper
-      const paperRes = await axios.post("http://localhost:3000/papers", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+      const paperRes = await axios.post(
+        "http://localhost:3000/papers",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
         },
-      });
+      );
       const paperId = paperRes.data?.id;
 
       // 2. Criar submissão (paper-conf) se conferência selecionada
@@ -66,7 +70,7 @@ export default function NovoPaper() {
           },
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
       }
 
@@ -112,12 +116,16 @@ export default function NovoPaper() {
         >
           <option value="">Selecione a Conferência</option>
           {conferencias.length === 0 && (
-            <option disabled value="">Nenhuma conferência cadastrada</option>
+            <option disabled value="">
+              Nenhuma conferência cadastrada
+            </option>
           )}
           {conferencias.map((conf) => (
             <option key={conf.id} value={conf.id}>
               {conf.titulo}
-              {conf.data ? ` (${new Date(conf.data).toLocaleDateString()})` : ""}
+              {conf.data
+                ? ` (${new Date(conf.data).toLocaleDateString()})`
+                : ""}
             </option>
           ))}
         </select>
