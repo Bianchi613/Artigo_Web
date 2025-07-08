@@ -25,13 +25,21 @@ export default function Login() {
 
       // Se o backend retornar o usuário junto com o token
       if (response.data.user || response.data.usuario) {
-        localStorage.setItem("usuario", JSON.stringify(response.data.user || response.data.usuario));
+        localStorage.setItem(
+          "usuario",
+          JSON.stringify(response.data.user || response.data.usuario),
+        );
       } else {
         // Se não retornar, buscar o perfil do usuário autenticado
         try {
-          const perfilRes = await axios.get("http://localhost:3000/usuarios/me", {
-            headers: { Authorization: `Bearer ${response.data.access_token}` }
-          });
+          const perfilRes = await axios.get(
+            "http://localhost:3000/usuarios/me",
+            {
+              headers: {
+                Authorization: `Bearer ${response.data.access_token}`,
+              },
+            },
+          );
           localStorage.setItem("usuario", JSON.stringify(perfilRes.data));
         } catch (perfilErr) {
           // Se não conseguir buscar o perfil, apenas continue
@@ -50,13 +58,16 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-md">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded shadow-md w-full max-w-md"
+      >
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <input
           type="text"
           placeholder="Usuário"
           value={username}
-          onChange={e => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           className="w-full mb-4 p-3 border rounded"
         />
         <div className="relative mb-4">
@@ -64,7 +75,7 @@ export default function Login() {
             type={showPassword ? "text" : "password"}
             placeholder="Senha"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full p-3 border rounded"
           />
           <button
@@ -77,7 +88,10 @@ export default function Login() {
           </button>
         </div>
         {erro && <div className="text-red-500 mb-4">{erro}</div>}
-        <button type="submit" className="w-full bg-gray-800 text-white p-3 rounded hover:bg-gray-900 mb-4">
+        <button
+          type="submit"
+          className="w-full bg-gray-800 text-white p-3 rounded hover:bg-gray-900 mb-4"
+        >
           Entrar
         </button>
         <button

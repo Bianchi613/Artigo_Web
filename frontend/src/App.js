@@ -13,7 +13,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <div style={{ padding: "2rem", textAlign: "center" }}>
               <h1>Dashboard</h1>
               <p>Login realizado com sucesso!</p>
             </div>

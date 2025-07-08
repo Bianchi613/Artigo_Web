@@ -12,6 +12,7 @@ artigo_web/
 ```
 
 ## Funcionalidades
+
 - Backend em NestJS, com autenticação JWT, Sequelize e PostgreSQL
 - Frontend em React, com Axios para consumo da API
 - Estilização moderna com Tailwind CSS
@@ -24,6 +25,7 @@ artigo_web/
 ## Como rodar o projeto
 
 ### Backend
+
 1. Entre na pasta `backend`
 2. Instale as dependências:
    ```bash
@@ -37,6 +39,7 @@ artigo_web/
    A API ficará disponível em `http://localhost:3000`
 
 ### Frontend
+
 1. Entre na pasta `frontend`
 2. Instale as dependências:
    ```bash
@@ -51,14 +54,16 @@ artigo_web/
      ```cmd
      set PORT=3001 && npm start
      ```
-   O frontend ficará disponível em `http://localhost:3001`
+     O frontend ficará disponível em `http://localhost:3001`
 
 ## Principais Telas
+
 - **Home:** Apresentação do sistema, botão para login
 - **Login:** Autenticação, integração com backend, salva token e perfil
 - **Dashboard:** Exemplo de rota protegida após login
 
 ## Observações
+
 - O frontend consome as APIs do backend em `/auth/login` e `/usuarios/me`
 - O projeto está pronto para expansão: cadastro, dashboard, CRUD, etc.
 - Estrutura de componentes e CSS organizada
@@ -67,28 +72,28 @@ artigo_web/
 
 ## 📊 Dashboard de Progresso
 
-| Tarefa                                      | Status     |
-|---------------------------------------------|:----------:|
-| Estrutura inicial do projeto (backend/front) | ✅ Feito    |
-| Configuração do NestJS (backend)             | ✅ Feito    |
-| Configuração do React (frontend)             | ✅ Feito    |
-| Instalação e setup do Tailwind CSS           | ✅ Feito    |
-| Integração do Axios no frontend              | ✅ Feito    |
-| Criação da tela Home                        | ✅ Feito    |
-| Criação da tela Login                       | ✅ Feito    |
-| Autenticação JWT no backend                  | ✅ Feito    |
-| Salvando token e perfil no localStorage      | ✅ Feito    |
-| Navegação com React Router                   | ✅ Feito    |
-| Estrutura de componentes organizada          | ✅ Feito    |
-| Limpeza de arquivos de teste desnecessários  | ✅ Feito    |
-| Dashboard de exemplo após login              | ✅ Feito    |
-| Cadastro de usuário (frontend)               | ⬜ A fazer  |
-| CRUD de usuários (frontend/backend)          | ⬜ A fazer  |
-| Telas administrativas (dashboard real)       | ⬜ A fazer  |
-| Validação de formulários                     | ⬜ A fazer  |
-| Proteção de rotas (auth guard frontend)      | ⬜ A fazer  |
-| Deploy em produção                           | ⬜ A fazer  |
-| Documentação detalhada das APIs              | ⬜ A fazer  |
+| Tarefa                                       |   Status   |
+| -------------------------------------------- | :--------: |
+| Estrutura inicial do projeto (backend/front) |  ✅ Feito  |
+| Configuração do NestJS (backend)             |  ✅ Feito  |
+| Configuração do React (frontend)             |  ✅ Feito  |
+| Instalação e setup do Tailwind CSS           |  ✅ Feito  |
+| Integração do Axios no frontend              |  ✅ Feito  |
+| Criação da tela Home                         |  ✅ Feito  |
+| Criação da tela Login                        |  ✅ Feito  |
+| Autenticação JWT no backend                  |  ✅ Feito  |
+| Salvando token e perfil no localStorage      |  ✅ Feito  |
+| Navegação com React Router                   |  ✅ Feito  |
+| Estrutura de componentes organizada          |  ✅ Feito  |
+| Limpeza de arquivos de teste desnecessários  |  ✅ Feito  |
+| Dashboard de exemplo após login              |  ✅ Feito  |
+| Cadastro de usuário (frontend)               | ⬜ A fazer |
+| CRUD de usuários (frontend/backend)          | ⬜ A fazer |
+| Telas administrativas (dashboard real)       | ⬜ A fazer |
+| Validação de formulários                     | ⬜ A fazer |
+| Proteção de rotas (auth guard frontend)      | ⬜ A fazer |
+| Deploy em produção                           | ⬜ A fazer |
+| Documentação detalhada das APIs              | ⬜ A fazer |
 
 ---
 

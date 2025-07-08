@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./UserRegister.css";
 
-export default function UserRegister() {
+function UserRegister() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -11,6 +12,7 @@ export default function UserRegister() {
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,6 +42,10 @@ export default function UserRegister() {
         setSenha("");
         setLattes("");
         setPerfil("cliente");
+        // Redireciona para login após cadastro bem-sucedido
+        setTimeout(() => {
+          navigate("/login");
+        }, 1200);
       }
     } catch (error) {
       console.error(error);
@@ -104,3 +110,5 @@ export default function UserRegister() {
     </div>
   );
 }
+
+export default UserRegister;
