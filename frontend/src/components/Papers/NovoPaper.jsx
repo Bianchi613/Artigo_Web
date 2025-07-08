@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -6,10 +6,30 @@ export default function NovoPaper() {
   const [titulo, setTitulo] = useState("");
   const [pdf, setPdf] = useState(null);
   const [autores, setAutores] = useState("");
+  const [conferencias, setConferencias] = useState([]);
+  const [conferenciaId, setConferenciaId] = useState("");
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  // Buscar conferências cadastradas ao montar o componente
+  useEffect(() => {
+    const fetchConferencias = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:3000/conferencia", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // Garante que sempre será um array e ordena por título
+        const lista = Array.isArray(res.data) ? res.data : [];
+        lista.sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+        setConferencias(lista);
+      } catch (err) {
+        setConferencias([]);
+      }
+    };
+    fetchConferencias();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,12 +47,29 @@ export default function NovoPaper() {
       );
       if (pdf) formData.append("pdf", pdf);
 
-      await axios.post("http://localhost:3000/papers", formData, {
+      // 1. Cadastrar o paper
+      const paperRes = await axios.post("http://localhost:3000/papers", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
+      const paperId = paperRes.data?.id;
+
+      // 2. Criar submissão (paper-conf) se conferência selecionada
+      if (conferenciaId && paperId) {
+        await axios.post(
+          "http://localhost:3000/submissoes",
+          {
+            paperId,
+            conferenciaId,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      }
+
       setSucesso("Paper cadastrado com sucesso!");
       setTimeout(() => navigate("/dashboard"), 1200);
     } catch (err) {
@@ -68,6 +105,22 @@ export default function NovoPaper() {
           onChange={(e) => setAutores(e.target.value)}
           className="w-full p-2 border rounded"
         />
+        <select
+          value={conferenciaId}
+          onChange={(e) => setConferenciaId(e.target.value)}
+          className="w-full p-2 border rounded"
+        >
+          <option value="">Selecione a Conferência</option>
+          {conferencias.length === 0 && (
+            <option disabled value="">Nenhuma conferência cadastrada</option>
+          )}
+          {conferencias.map((conf) => (
+            <option key={conf.id} value={conf.id}>
+              {conf.titulo}
+              {conf.data ? ` (${new Date(conf.data).toLocaleDateString()})` : ""}
+            </option>
+          ))}
+        </select>
         <button
           type="submit"
           className="w-full bg-blue-700 text-white p-2 rounded"
